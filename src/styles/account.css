@@ -1,0 +1,92 @@
+/* Login, settings, dialogs and sync status — same storybook language as app.css (paper, brown ink, stitches). */
+
+/* ---------- form fields ---------- */
+.field{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.field label{font-size:13px;font-weight:700;color:var(--ink)}
+.field-box{display:flex;align-items:center;background:var(--paper);border:2px solid var(--brown);border-radius:14px;padding:0 6px 0 14px;min-height:48px;transition:box-shadow .15s,border-color .15s}
+.field-box:focus-within{box-shadow:0 0 0 3px rgba(232,155,60,.45)}
+.field-box input{flex:1;min-width:0;border:0;background:transparent;font:16px/1.2 var(--body);color:var(--ink);padding:12px 0;outline:none}
+.field-box input::placeholder{color:var(--muted)}
+.field input[aria-invalid="true"]{color:var(--red-dark)}
+.field:has(input[aria-invalid="true"]) .field-box{border-color:var(--red-dark)}
+.pw-toggle{flex:none;border:0;background:var(--sand);color:var(--ink);border-radius:10px;font-size:12px;font-weight:700;padding:0 10px;min-height:34px}
+.field-hint{font-size:12px;color:var(--muted);line-height:1.4}
+.form-msg{min-height:18px;font-size:13px;line-height:1.4;font-weight:700}
+.form-msg.error{color:var(--red-dark)}
+.form-msg.info{color:#467A2A}
+.link-btn{border:0;background:transparent;padding:8px 4px;min-height:40px;font:700 13px var(--body);color:var(--brown);text-decoration:underline;text-underline-offset:3px}
+.link-btn:disabled{opacity:.5}
+.link-btn.danger{color:var(--red-dark)}
+.btn-danger{background:var(--red-dark);color:#fff;font-family:var(--display);box-shadow:0 4px 0 #8E302C}
+.btn-danger:hover{background:#C44F49;color:#fff}
+
+/* ---------- login ---------- */
+.login-hero{display:flex;align-items:center;gap:10px;background:var(--sand);border-radius:18px;padding:8px 14px;flex:none}
+.login-hero img{height:64px;width:auto}
+.login-hero .hand{font-size:18px;line-height:1.2;color:var(--ink)}
+.segmented{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:4px;background:var(--sand);border-radius:20px;padding:4px;flex:none}
+.segmented button{min-height:36px;border-radius:16px;border:0;background:transparent;font-size:13px;font-weight:700;color:var(--brown)}
+.segmented button[aria-selected="true"]{border:2px solid var(--brown);background:var(--paper);font-family:var(--display);font-weight:400;font-size:14px;color:var(--ink)}
+.login-form{display:flex;flex-direction:column;gap:12px;flex:none}
+.login-form .submit{height:60px;border-radius:30px;font-size:20px}
+.login-links{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px;margin-top:auto}
+.login-note{padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.login-note b{font-family:var(--display);font-weight:400;font-size:17px;color:var(--ink)}
+.login-note p{font-size:13px;line-height:1.5}
+.login-actions{display:flex;flex-direction:column;gap:10px;margin-top:auto}
+
+/* ---------- settings ---------- */
+.account-card{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:18px;flex:none}
+.account-card > img{width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:60% 25%;border:2px solid var(--orange);background:var(--paper);flex:none}
+.account-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.account-body h2{font-family:var(--display);font-weight:400;font-size:18px;color:var(--ink)}
+.account-kind{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sync-line{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--brown)}
+.settings-section{padding:12px 14px;display:flex;flex-direction:column;gap:8px;flex:none}
+.settings-section b{font-family:var(--display);font-weight:400;font-size:16px;color:var(--ink)}
+.settings-section p{font-size:13px;line-height:1.5}
+.settings-section.warn{background:#FFF1DC;border-color:var(--orange)}
+.settings-section .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.inline-field{display:flex;align-items:flex-end;gap:8px}
+.inline-field .btn-sm{height:48px;border-radius:14px}
+.settings-actions{display:flex;flex-direction:column;align-items:stretch;gap:6px;margin-top:auto;padding-top:6px}
+.settings-actions .version{text-align:center;font-size:11px;color:var(--muted)}
+
+/* ---------- sync status dot ---------- */
+.sync-dot{display:inline-block;width:10px;height:10px;border-radius:50%;border:2px solid var(--paper);box-sizing:content-box;background:var(--tan);flex:none}
+.sync-dot.ok{background:#5FA83A}
+.sync-dot.busy{background:var(--orange);animation:sync-pulse 1s ease-in-out infinite}
+.sync-dot.bad{background:var(--red-dark)}
+.sync-dot.off{background:var(--tan)}
+@keyframes sync-pulse{50%{opacity:.4}}
+.profile .avatar{position:relative;display:flex;flex:none}
+.profile .avatar .sync-dot{position:absolute;right:-2px;bottom:-2px;width:8px;height:8px}
+
+/* ---------- dialogs ---------- */
+.dialog-backdrop{position:fixed;inset:0;z-index:60;background:rgba(74,44,23,.5);display:flex;align-items:center;justify-content:center;padding:16px;animation:fade-in .2s ease}
+.dialog{width:100%;max-width:358px;max-height:calc(100dvh - 32px);overflow:auto;background:var(--cream);border:3px solid var(--brown);border-radius:24px;padding:20px 18px 18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 8px 0 rgba(74,44,23,.25);animation:pop .3s cubic-bezier(.2,1.4,.4,1)}
+.dialog h2{font-family:var(--display);font-weight:400;font-size:21px;color:var(--ink);text-align:center}
+.dialog p{font-size:14px;line-height:1.5;text-align:center}
+.dialog-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.dialog-actions .btn{font-size:16px}
+.save-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.save-card{background:var(--paper);border:2px solid var(--tan);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.save-card > b{font-family:var(--display);font-weight:400;font-size:15px;color:var(--ink)}
+.save-card dl{margin:0;display:flex;flex-direction:column;gap:3px}
+.save-card dl div{display:flex;justify-content:space-between;gap:6px;font-size:12px}
+.save-card dt{color:var(--muted)}
+.save-card dd{margin:0;font-weight:700;color:var(--ink)}
+.save-card small{font-size:11px;color:var(--muted)}
+
+/* ---------- weekly ranking ---------- */
+.dialog.ranking p{font-size:13px}
+.rank-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:340px;overflow:auto}
+.rank-list li{display:flex;align-items:center;gap:10px;background:var(--paper);border:1.5px solid var(--tan);border-radius:14px;padding:8px 12px}
+.rank-list li.me{border:2px solid var(--orange);background:#FFF1DC}
+.rank-list .medal{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:14px;color:var(--ink);background:var(--sand);flex:none}
+.rank-list .medal.m1{background:#FFD24D;border:2px solid var(--ink)}
+.rank-list .medal.m2{background:#E3E3E3;border:2px solid var(--ink)}
+.rank-list .medal.m3{background:#E8B48A;border:2px solid var(--ink)}
+.rank-list .who{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;color:var(--ink);font-size:14px}
+.rank-list .who small{color:var(--orange-dark)}
+.rank-list b{font-family:var(--display);font-weight:400;font-size:16px;color:var(--ink)}
