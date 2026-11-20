@@ -1,4 +1,5 @@
-# Build, test and publish to GitHub Pages on every push to main.
+# Test and publish to GitHub Pages on every push to main.
+# The site is deployed only when type check, unit tests AND browser tests all pass.
 # Needs repository variables VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY (the publishable key is public by design;
 # access is enforced by Supabase row-level security). Without them the site runs offline-only.
 name: Deploy to GitHub Pages
@@ -6,6 +7,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -14,16 +16,20 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
+
+env:
+  VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+  VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -41,25 +47,60 @@ jobs:
         env:
           # project pages live under /<repo>/
           VITE_BASE: /${{ github.event.repository.name }}/
-          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
 
       # GitHub Pages has no SPA rewrites: serve the app for deep links like /<repo>/home too
       - name: SPA fallback
         run: cp dist/index.html dist/404.html
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
+        if: github.event_name != 'pull_request'
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
+        if: github.event_name != 'pull_request'
         with:
           path: dist
 
+  # Browser tests at phone size: every screen, WCAG 2.1 AA checks, install + offline.
+  # They play on-device only (no Supabase guest accounts are created).
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Build for the preview server (service worker tests)
+        run: npx vite build
+
+      - name: Browser tests
+        run: npx playwright test e2e/screens.spec.ts e2e/a11y.spec.ts e2e/pwa.spec.ts
+
+      - name: Keep screenshots and traces of a failed run
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-report
+          path: |
+            test-results
+            e2e-screens
+          retention-days: 7
+
   deploy:
-    needs: build
+    if: github.event_name != 'pull_request'
+    needs: [build, e2e]
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

@@ -7,7 +7,10 @@ export default defineConfig({
   expect: { timeout: 8_000 },
   fullyParallel: false,
   workers: 1,
-  reporter: [['list']],
+  // CI machines are slower and noisier: one retry, and a stray test.only must never pass silently
+  retries: process.env.CI ? 1 : 0,
+  forbidOnly: !!process.env.CI,
+  reporter: process.env.CI ? [['list'], ['github']] : [['list']],
   use: {
     baseURL: 'http://localhost:5173',
     viewport: { width: 390, height: 844 },
