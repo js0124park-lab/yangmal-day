@@ -7,6 +7,7 @@ import { buzz } from '../game/hooks';
 import { playSound } from '../game/sound';
 import { fmt, useGame } from '../game/state';
 import { ROUTES } from '../routes';
+import { asset } from '../lib/asset';
 
 const FURNITURE_ART: Record<FurnitureKind, ReactNode> = {
   cushion: (
@@ -170,7 +171,7 @@ export default function DecoScreen() {
       </div>
 
       <div className="stage deco-stage">
-        <img className="cover" src="/images/deco-room.png" alt="창가에 분홍 쿠션 소파와 발바닥 러그가 놓인 밝은 방" />
+        <img className="cover" src={asset('images/deco-room.png')} alt="창가에 분홍 쿠션 소파와 발바닥 러그가 놓인 밝은 방" />
         {deco.placed && (
           <>
             <div className={deco.flipped ? 'select flipped' : 'select'} key={deco.placed}>

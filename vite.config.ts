@@ -2,7 +2,11 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+// '/' locally; GitHub Pages serves the site from '/<repo>/' (set by the deploy workflow via VITE_BASE).
+const base = process.env.VITE_BASE || '/';
+
 export default defineConfig({
+  base,
   plugins: [
     react(),
     // Installable app + offline start. The service worker precaches the app shell, images and fonts.
@@ -16,23 +20,23 @@ export default defineConfig({
         short_name: '양말이',
         description: '오늘도, 양말이와 함께하는 소소하고 특별한 하루! 반려견 힐링 육성 어드벤처',
         lang: 'ko',
-        start_url: '/',
-        scope: '/',
+        start_url: base,
+        scope: base,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#FFF7EC',
         theme_color: '#E89B3C',
         categories: ['games', 'entertainment'],
         icons: [
-          { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
-          { src: '/icons/maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: `${base}icons/icon-192.png`, sizes: '192x192', type: 'image/png' },
+          { src: `${base}icons/icon-512.png`, sizes: '512x512', type: 'image/png' },
+          { src: `${base}icons/maskable-512.png`, sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,png,woff,woff2,webmanifest}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
-        navigateFallback: '/index.html',
+        navigateFallback: `${base}index.html`,
         cleanupOutdatedCaches: true,
         runtimeCaching: [
           {

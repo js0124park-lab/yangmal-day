@@ -8,6 +8,7 @@ import { buzz, useFloaters } from '../game/hooks';
 import { playSound } from '../game/sound';
 import { useGame, type Reward } from '../game/state';
 import { ROUTES } from '../routes';
+import { asset } from '../lib/asset';
 
 const TAB_ICONS: Record<CareId, ReactNode> = {
   bath: <BathIcon />,
@@ -134,7 +135,7 @@ export default function CareScreen() {
         )}
       </div>
 
-      <Stage grow className="care-stage" src="/images/bath.png" alt="거품 가득한 욕조에서 샤워를 받으며 눈을 감고 행복해하는 양말이">
+      <Stage grow className="care-stage" src={asset('images/bath.png')} alt="거품 가득한 욕조에서 샤워를 받으며 눈을 감고 행복해하는 양말이">
         {def.input !== 'none' && (
           <div
             className="rub-area"

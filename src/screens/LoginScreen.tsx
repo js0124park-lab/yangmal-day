@@ -6,6 +6,7 @@ import { useAuth } from '../auth/AuthProvider';
 import { useSync } from '../sync/SyncProvider';
 import { useToast } from '../components/Toast';
 import { ROUTES } from '../routes';
+import { asset } from '../lib/asset';
 
 type Mode = 'signin' | 'signup' | 'link' | 'reset' | 'newpassword';
 
@@ -236,7 +237,7 @@ export default function LoginScreen() {
       <LoginTop title={TITLES[mode]} />
 
       <div className="login-hero">
-        <img src="/images/pose-sit.png" alt="" />
+        <img src={asset('images/pose-sit.png')} alt="" />
         <p className="hand">
           {mode === 'link'
             ? '계정을 연결하면 지금 진행을 그대로 이어가요!'

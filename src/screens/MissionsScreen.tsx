@@ -8,6 +8,7 @@ import { buzz } from '../game/hooks';
 import { playSound } from '../game/sound';
 import { fmt, useGame } from '../game/state';
 import { ROUTES } from '../routes';
+import { asset } from '../lib/asset';
 
 const ICONS: Record<Kind, ReactNode> = {
   bowl: <BowlIcon size={26} />,
@@ -41,7 +42,7 @@ export default function MissionsScreen() {
   return (
     <Screen className="todo missions">
       <div className="backdrop" aria-hidden="true" onClick={() => navigate(ROUTES.home)}>
-        <img src="/images/room.png" alt="" />
+        <img src={asset('images/room.png')} alt="" />
       </div>
 
       <section className="sheet" role="dialog" aria-modal="true" aria-labelledby="missions-title">

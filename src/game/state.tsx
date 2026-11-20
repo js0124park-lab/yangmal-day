@@ -4,6 +4,7 @@ import { BONUS, TREATS, type FurnitureKind, type PoseId, type TodoId } from '../
 import { DRIFT_PER_HOUR, MAX_DRIFT_HOURS, gameDay } from './time';
 import { bumpLocalSeq } from './saveMeta';
 import { MISSIONS, type CounterKey, type Counters } from './missions';
+import { asset } from '../lib/asset';
 
 export type StatKey = 'fullness' | 'joy' | 'clean' | 'stamina';
 export type Stats = Record<StatKey, number>;
@@ -69,9 +70,9 @@ export const INITIAL: GameState = {
 export const expToNext = (level: number) => level * 300;
 
 export function growthStage(level: number) {
-  if (level < 4) return { name: '꼬마 양말이', age: '3개월', img: '/images/evolve-3m.png' };
-  if (level < 7) return { name: '활발한 양말이', age: '6개월', img: '/images/evolve-6m.png' };
-  return { name: '듬직한 양말이', age: '1살', img: '/images/evolve-6m.png' };
+  if (level < 4) return { name: '꼬마 양말이', age: '3개월', img: asset('images/evolve-3m.png') };
+  if (level < 7) return { name: '활발한 양말이', age: '6개월', img: asset('images/evolve-6m.png') };
+  return { name: '듬직한 양말이', age: '1살', img: asset('images/evolve-6m.png') };
 }
 
 const clamp = (n: number, lo = 0, hi = 100) => Math.max(lo, Math.min(hi, n));

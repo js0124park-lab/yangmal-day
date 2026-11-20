@@ -8,6 +8,7 @@ import { buzz } from '../game/hooks';
 import { playSound } from '../game/sound';
 import { useGame } from '../game/state';
 import { ROUTES } from '../routes';
+import { asset } from '../lib/asset';
 
 /** P04 오늘의 할 일 — bottom sheet over the room. Tap the backdrop or press Esc to close. */
 export default function TodoScreen() {
@@ -35,7 +36,7 @@ export default function TodoScreen() {
   return (
     <Screen className="todo">
       <div className="backdrop" aria-hidden="true" onClick={() => navigate(ROUTES.home)}>
-        <img src="/images/room.png" alt="" />
+        <img src={asset('images/room.png')} alt="" />
       </div>
 
       <section className="sheet" role="dialog" aria-modal="true" aria-labelledby="todo-title">

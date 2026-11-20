@@ -12,6 +12,7 @@ import { fetchNickname, updateNickname } from '../lib/cloudSave';
 import { useGame } from '../game/state';
 import { Field } from './LoginScreen';
 import { ROUTES } from '../routes';
+import { asset } from '../lib/asset';
 
 const PHASE_TEXT: Record<SyncPhase, string> = {
   off: '이 기기에만 저장 중',
@@ -150,7 +151,7 @@ export default function SettingsScreen() {
 
       {/* account + save status */}
       <section className="account-card card stitch" aria-labelledby="acct-h">
-        <img src="/images/avatar-6m.png" alt="" />
+        <img src={asset('images/avatar-6m.png')} alt="" />
         <div className="account-body">
           <h2 id="acct-h">{savedNick || '보호자'}</h2>
           <span className="account-kind">{accountLabel}</span>

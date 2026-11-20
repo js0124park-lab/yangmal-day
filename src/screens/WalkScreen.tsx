@@ -8,6 +8,7 @@ import { buzz, useFrame } from '../game/hooks';
 import { playSound } from '../game/sound';
 import { useGame } from '../game/state';
 import { ROUTES } from '../routes';
+import { asset } from '../lib/asset';
 
 type Dir = 'up' | 'down' | 'left' | 'right';
 
@@ -226,7 +227,7 @@ export default function WalkScreen() {
       <Stage
         grow
         className="walk-stage"
-        src="/images/walk.png"
+        src={asset('images/walk.png')}
         alt="벚꽃 핀 호숫가 산책로를 걷는 양말이"
         // gentle pan around the design's framing (20% 55%); wider pans reveal art baked into the photo's right edge
         imgStyle={{ objectPosition: `${20 + (pos.x - 50) * 0.12}% ${55 + (pos.y - 54) * 0.15}%` }}

@@ -24,6 +24,7 @@ import { TODOS } from '../data/mock';
 import { buzz, useFloaters } from '../game/hooks';
 import { expToNext, fmt, growthStage, moodLine, useGame } from '../game/state';
 import { ROUTES } from '../routes';
+import { asset } from '../lib/asset';
 
 const PET_LINES = ['좋아요 멍!', '더 쓰다듬어 줘요!', '꼬리 살랑살랑~'];
 
@@ -82,7 +83,7 @@ export default function HomeScreen() {
       <div className="status">
         <button type="button" className="profile card stitch" aria-label={`프로필, 설정 열기 (${SYNC_LABEL[sync.phase]})`} onClick={() => navigate(ROUTES.settings)}>
           <span className="avatar">
-            <img src="/images/room.png" alt="" />
+            <img src={asset('images/room.png')} alt="" />
             <i className={`sync-dot ${SYNC_DOT[sync.phase]}`} aria-hidden="true" />
           </span>
           <div style={{ textAlign: 'left' }}>
@@ -136,7 +137,7 @@ export default function HomeScreen() {
       {/* 양말이 방 + 퀵메뉴 */}
       <div className="stage room">
         {/* re-keying only the photo replays the wiggle without remounting the floaters */}
-        <img key={wiggle} className={wiggle ? 'cover wiggle' : 'cover'} src="/images/room.png" alt="거실 러그 위에서 웃고 있는 양말이" />
+        <img key={wiggle} className={wiggle ? 'cover wiggle' : 'cover'} src={asset('images/room.png')} alt="거실 러그 위에서 웃고 있는 양말이" />
         <button type="button" className="pet-area" aria-label="양말이 쓰다듬기" onClick={pet} />
         <Bubble className="say" key={say}>
           {pets === 0 && state.stats.fullness < 30 ? <SteamBowlIcon /> : <HeartIcon size={20} color="#F6B5C3" />}
@@ -189,7 +190,7 @@ export default function HomeScreen() {
 
       {/* 성장 게이지 */}
       <div className="growth">
-        <img src="/images/avatar-6m.png" alt={`${stage.age} ${stage.name}`} />
+        <img src={asset('images/avatar-6m.png')} alt={`${stage.age} ${stage.name}`} />
         <div className="body">
           <div className="head">
             <b>

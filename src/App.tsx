@@ -42,7 +42,7 @@ function usePrefetchScreens() {
     let handle = 0;
     // Safari has no requestIdleCallback: fall back to a short timer
     const hasIdle = typeof window.requestIdleCallback === 'function';
-    const idle = (cb: () => void): number => (hasIdle ? window.requestIdleCallback(cb, { timeout: 2000 }) : setTimeout(cb, 200));
+    const idle = (cb: () => void): number => (hasIdle ? window.requestIdleCallback(cb, { timeout: 2000 }) : window.setTimeout(cb, 200));
     const next = () => {
       const load = order[i++];
       if (!load) return;
@@ -55,7 +55,7 @@ function usePrefetchScreens() {
     handle = idle(next);
     return () => {
       if (hasIdle) window.cancelIdleCallback(handle);
-      else clearTimeout(handle);
+      else window.clearTimeout(handle);
     };
   }, []);
 }

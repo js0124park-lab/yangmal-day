@@ -7,6 +7,7 @@ import { buzz, useFrame } from '../game/hooks';
 import { playSound } from '../game/sound';
 import { useGame } from '../game/state';
 import { ROUTES } from '../routes';
+import { asset } from '../lib/asset';
 
 const CUTS = 5;
 const ingredients = [
@@ -124,7 +125,7 @@ export default function KitchenScreen() {
         </div>
       </div>
 
-      <Stage className="kitchen-stage" src="/images/kitchen.png" alt="도마 위의 닭가슴살과 단호박, 칼로 써는 장면">
+      <Stage className="kitchen-stage" src={asset('images/kitchen.png')} alt="도마 위의 닭가슴살과 단호박, 칼로 써는 장면">
         {last ? (
           <div className={`shout pop ${last}`} key={`shout-${results.length}`}>
             {finished ? '완성!' : SHOUT[last]}
@@ -133,7 +134,7 @@ export default function KitchenScreen() {
           <div className="shout hint">초록 구간에서 탭!</div>
         )}
         <div className="pup">
-          <img src="/images/avatar-6m.png" alt="기대하는 양말이" />
+          <img src={asset('images/avatar-6m.png')} alt="기대하는 양말이" />
           <Bubble key={`say-${results.length}`}>{finished ? `별 ${stars}개 요리 완성!` : last ? SAY[last] : '맛있겠다 멍!'}</Bubble>
         </div>
         {combo >= 2 && (

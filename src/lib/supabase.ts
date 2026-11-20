@@ -36,4 +36,4 @@ export async function fetchGuestSignInEnabled(): Promise<boolean | null> {
 }
 
 /** Where Supabase email links send the player back to. */
-export const authRedirectUrl = () => `${window.location.origin}/login`;
+export const authRedirectUrl = () => `${window.location.origin}${import.meta.env.BASE_URL}login`;

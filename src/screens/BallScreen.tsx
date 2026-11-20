@@ -9,6 +9,7 @@ import { ROUTES } from '../routes';
 import { useAuth } from '../auth/AuthProvider';
 import { submitBallScore, type BallRank } from '../lib/cloudSave';
 import { RankingDialog } from '../components/RankingDialog';
+import { asset } from '../lib/asset';
 
 type RankState = { kind: 'idle' } | { kind: 'sending' } | { kind: 'ranked'; info: BallRank } | { kind: 'failed' } | { kind: 'offline' };
 
@@ -143,7 +144,7 @@ export default function BallScreen() {
         </div>
       </div>
 
-      <Stage grow className="ball-stage" src="/images/ball.png" alt="잔디밭에서 빨간 공을 향해 점프하는 양말이와 발자국 착지 원">
+      <Stage grow className="ball-stage" src={asset('images/ball.png')} alt="잔디밭에서 빨간 공을 향해 점프하는 양말이와 발자국 착지 원">
           {shout ? (
             <div className={`shout pop ${shout.kind}`} key={shout.id}>
               {shout.text}

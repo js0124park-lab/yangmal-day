@@ -5,6 +5,7 @@ import { useToast } from '../components/Toast';
 import { BallIcon, BoneIcon, CloseIcon, CornerOrnament, HeartIcon, SparkleIcon, StarIcon } from '../components/icons';
 import { growthStage, useGame } from '../game/state';
 import { ROUTES } from '../routes';
+import { asset } from '../lib/asset';
 
 function UnlockCard({ icon, title, sub, color }: { icon: ReactNode; title: string; sub: string; color: string }) {
   return (
@@ -56,7 +57,7 @@ export default function LevelUpScreen() {
       <h1 className="pop">Lv.{to}로 성장했어요!</h1>
 
       <div className="stage grow evolve">
-        <img className="cover" src="/images/room.png" alt="" aria-hidden="true" />
+        <img className="cover" src={asset('images/room.png')} alt="" aria-hidden="true" />
         <div className="veil" aria-hidden="true" />
         <div className="glow" aria-hidden="true" />
         <SparkleIcon size={22} style={{ left: 40, top: 210 }} />

@@ -1,5 +1,6 @@
 // Static game content (names, rewards, art choices). Changing values live in src/game/state.tsx.
 import { ROUTES } from '../routes';
+import { asset } from '../lib/asset';
 
 export type TodoId = 'meal' | 'play' | 'walk' | 'care' | 'deco';
 
@@ -49,10 +50,10 @@ export const CARE_TABS: CareDef[] = [
 export type PoseId = 'sit' | 'roll' | 'run' | 'wink';
 
 export const POSES: Array<{ id: PoseId; label: string; src: string; alt: string; say: string; right: string; bottom: string; width: string }> = [
-  { id: 'sit', label: '마음에 쏙', src: '/images/pose-sit.png', alt: '하트를 띄우며 얌전히 앉아 있는 양말이', say: '이 소파 마음에 들어요 멍!', right: '20px', bottom: '10px', width: '116px' },
-  { id: 'roll', label: '뒹굴뒹굴', src: '/images/pose-roll.png', alt: '러그 위에서 배를 보이며 뒹구는 양말이', say: '러그 위에서 뒹굴뒹굴~', right: '6px', bottom: '8px', width: '150px' },
-  { id: 'run', label: '신나요', src: '/images/pose-run.png', alt: '새 가구를 보고 신나서 달려오는 양말이', say: '새 가구다! 구경할래요 멍!', right: '14px', bottom: '10px', width: '128px' },
-  { id: 'wink', label: '완성 윙크', src: '/images/pose-wink.png', alt: '별을 띄우며 윙크하는 양말이', say: '꾸미기 완료! 최고예요 멍!', right: '12px', bottom: '8px', width: '128px' },
+  { id: 'sit', label: '마음에 쏙', src: asset('images/pose-sit.png'), alt: '하트를 띄우며 얌전히 앉아 있는 양말이', say: '이 소파 마음에 들어요 멍!', right: '20px', bottom: '10px', width: '116px' },
+  { id: 'roll', label: '뒹굴뒹굴', src: asset('images/pose-roll.png'), alt: '러그 위에서 배를 보이며 뒹구는 양말이', say: '러그 위에서 뒹굴뒹굴~', right: '6px', bottom: '8px', width: '150px' },
+  { id: 'run', label: '신나요', src: asset('images/pose-run.png'), alt: '새 가구를 보고 신나서 달려오는 양말이', say: '새 가구다! 구경할래요 멍!', right: '14px', bottom: '10px', width: '128px' },
+  { id: 'wink', label: '완성 윙크', src: asset('images/pose-wink.png'), alt: '별을 띄우며 윙크하는 양말이', say: '꾸미기 완료! 최고예요 멍!', right: '12px', bottom: '8px', width: '128px' },
 ];
 
 export const DECO_SPACES = ['실내', '마당', '개집'];

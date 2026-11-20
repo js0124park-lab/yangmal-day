@@ -5,6 +5,7 @@ import { PawIcon } from '../components/icons';
 import { useToast } from '../components/Toast';
 import { useAuth } from '../auth/AuthProvider';
 import { ROUTES } from '../routes';
+import { asset } from '../lib/asset';
 
 const GUEST_TIMEOUT_MS = 6000;
 
@@ -44,8 +45,8 @@ export default function TitleScreen() {
   return (
     <Screen className="title">
       <div className="title-art">
-        <img className="logo" src="/images/logo.png" alt="양말이의 하루 Yangmal's Day 로고" />
-        <img className="hero" src="/images/title-hero.png" alt="빨간 리드줄을 달고 신나게 달려오는 양말이" />
+        <img className="logo" src={asset('images/logo.png')} alt="양말이의 하루 Yangmal's Day 로고" />
+        <img className="hero" src={asset('images/title-hero.png')} alt="빨간 리드줄을 달고 신나게 달려오는 양말이" />
       </div>
 
       <div className="title-body">
