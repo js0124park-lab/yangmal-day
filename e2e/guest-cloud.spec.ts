@@ -21,7 +21,7 @@ test('guest plays, saves to the cloud, continues on a second device, resolves a 
   test.setTimeout(150_000);
 
   // ---------- device A: start as a guest ----------
-  const problems = await freshStart(page);
+  const problems = await freshStart(page, { cloud: true });
   await page.getByRole('button', { name: /터치해서 시작하기/ }).click();
   await expect(page).toHaveURL(/\/home$/);
   await expect(savedDot(page)).toBeVisible({ timeout: 15_000 });

@@ -31,9 +31,19 @@ export async function deleteTestGuest(page: Page, request: APIRequestContext) {
 
 export const SHOTS = 'e2e-screens';
 
-/** Fresh visit: empty storage, and any page error or console error fails the test at the end. */
-export async function freshStart(page: Page) {
+/**
+ * Fresh visit: empty storage, and any page error or console error fails the test at the end.
+ * UI tests play on-device only (no guest account): Supabase allows ~30 new guests per hour per IP,
+ * so only tests that really exercise the cloud pass `{ cloud: true }`.
+ */
+export async function freshStart(page: Page, opts: { cloud?: boolean } = {}) {
   const problems: string[] = [];
+  if (!opts.cloud) {
+    // report guest sign-in as switched off: the app then starts locally without calling /signup
+    await page.route('**/auth/v1/settings', (route) =>
+      route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ external: { anonymous_users: false, email: true } }) }),
+    );
+  }
   page.on('pageerror', (e) => problems.push(`pageerror: ${e.message}`));
   page.on('console', (m) => {
     if (m.type() !== 'error') return;
