@@ -123,7 +123,7 @@ export default function CareScreen() {
       <div className="clean panel stitch">
         <DropIcon size={22} />
         <span className="label">청결도</span>
-        <Meter value={state.stats.clean} color="var(--sky)" />
+        <Meter value={state.stats.clean} label="청결도" color="var(--sky)" />
         <span className="num">{Math.round(state.stats.clean)}</span>
         {gain !== null && (
           <span className="gain" key={gain}>
@@ -155,7 +155,7 @@ export default function CareScreen() {
             <span>{stepLabel}</span>
           </div>
           <p>{guide}</p>
-          {def.steps > 0 && !isDone && <Meter value={(step / def.steps) * 100} color="var(--orange)" style={{ flex: 'none', height: 8 }} />}
+          {def.steps > 0 && !isDone && <Meter value={(step / def.steps) * 100} label={`${def.title} 진행`} valueText={`${step} / ${def.steps}`} color="var(--orange)" style={{ flex: 'none', height: 8 }} />}
         </div>
         <Floaters items={floaters} />
       </Stage>

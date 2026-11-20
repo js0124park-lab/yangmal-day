@@ -56,7 +56,7 @@ export default function TitleScreen() {
         </p>
 
         <div className="loading">
-          <Meter value={100} />
+          <Meter value={100} label="불러오기" valueText={auth.status === 'loading' ? '불러오는 중' : '준비 완료'} />
           <span aria-live="polite">
             {auth.status === 'loading'
               ? '양말이를 깨우는 중이에요'

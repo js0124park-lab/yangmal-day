@@ -101,11 +101,38 @@ export function Bubble({ children, className, style }: { children: ReactNode; cl
   );
 }
 
-/** Horizontal gauge. `value` is 0–100, `color` any CSS color or var(). */
-export function Meter({ value, color, className, style }: { value: number; color?: string; className?: string; style?: CSSProperties }) {
+/**
+ * Horizontal gauge. `value` is 0–100, `color` any CSS color or var().
+ * `label` names what it measures for screen readers (required: an unnamed meter only reads "24").
+ */
+export function Meter({
+  value,
+  label,
+  valueText,
+  color,
+  className,
+  style,
+}: {
+  value: number;
+  label: string;
+  valueText?: string;
+  color?: string;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  const v = Math.round(value);
   const fill = { '--v': `${value}%`, ...(color ? { '--c': color } : {}) } as CSSProperties;
   return (
-    <span className={cx('meter', className)} style={style} role="meter" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}>
+    <span
+      className={cx('meter', className)}
+      style={style}
+      role="meter"
+      aria-label={label}
+      aria-valuenow={v}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuetext={valueText}
+    >
       <i style={fill} />
     </span>
   );
@@ -116,7 +143,7 @@ export function StatRow({ label, value, color, display, numColor }: { label: str
   return (
     <div className="stat">
       <span className="label">{label}</span>
-      <Meter value={value} color={color} />
+      <Meter value={value} label={label} valueText={display} color={color} />
       <span className="num" style={numColor ? { color: numColor } : undefined}>
         {display ?? value}
       </span>

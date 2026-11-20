@@ -15,6 +15,7 @@
   --muted:#8C6A52;      /* captions */
   --orange:#E89B3C;     /* primary action */
   --orange-dark:#C97A1F;
+  --orange-text:#8F5210; /* orange-dark tuned for text: 4.8:1+ on paper/cream/sand (WCAG AA); #C97A1F is 3.3:1 */
   --red:#D9534F;
   --red-dark:#B8423D;
   --pink:#F6B5C3;
@@ -130,7 +131,7 @@ button.profile{font:inherit;color:inherit;text-align:left}
 .todo-memo .body{flex:1;display:flex;flex-direction:column;gap:5px}
 .todo-memo .head{display:flex;justify-content:space-between;align-items:baseline}
 .todo-memo .head b{font-family:var(--display);font-weight:400;font-size:17px;color:var(--ink)}
-.todo-memo .head span{font-family:var(--display);font-size:15px;color:var(--orange-dark)}
+.todo-memo .head span{font-family:var(--display);font-size:15px;color:var(--orange-text)}
 .todo-memo small{font-size:12px;color:var(--muted)}
 .segs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
 .segs i{height:8px;border-radius:4px;background:var(--sand)}
@@ -209,7 +210,7 @@ button.profile{font:inherit;color:inherit;text-align:left}
 .timing{display:flex;flex-direction:column;gap:6px;flex:none}
 .timing .head{display:flex;justify-content:space-between;font-size:13px}
 .timing .head b{color:var(--ink)}
-.timing .head span{font-family:var(--display);color:var(--orange-dark)}
+.timing .head span{font-family:var(--display);color:var(--orange-text)}
 .timing .bar{height:22px;border-radius:11px;overflow:hidden;border:2px solid var(--brown);display:grid;grid-template-columns:30fr 15fr 14fr 15fr 26fr}
 .timing .pointer{position:relative;height:12px;margin-top:-4px}
 .timing .pointer svg{position:absolute;left:calc(var(--at,52%) - 9px);top:0}
@@ -302,7 +303,7 @@ button.profile{font:inherit;color:inherit;text-align:left}
 .care-stage .callout{flex-direction:column;align-items:stretch;gap:6px;padding:10px 14px}
 .care-stage .callout .head{display:flex;justify-content:space-between;align-items:baseline}
 .care-stage .callout .head b{font-family:var(--display);font-weight:400;font-size:17px;color:var(--ink)}
-.care-stage .callout .head span{font-family:var(--display);font-size:14px;color:var(--orange-dark)}
+.care-stage .callout .head span{font-family:var(--display);font-size:14px;color:var(--orange-text)}
 .care-stage .callout p{font-size:13px}
 .care-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;flex:none}
 .care-tabs button{position:relative;height:92px;border-radius:18px;border:2px solid var(--tan);background:var(--sand);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0;font-family:var(--display);font-size:15px;color:var(--ink)}

@@ -106,7 +106,7 @@ button.item:disabled{cursor:not-allowed}
 .deco-stage .select svg{transition:transform .3s cubic-bezier(.2,.9,.25,1);filter:drop-shadow(0 3px 0 rgba(74,44,23,.2))}
 .deco-stage .select.flipped svg{transform:scaleX(-1)}
 .deco-stage .pose{transition:right .3s ease,bottom .3s ease,width .3s ease}
-.item.owned-only small{color:var(--orange-dark)}
+.item.owned-only small{color:var(--orange-text)}
 .item .cant{color:var(--red-dark)}
 
 /* ---------- level up ---------- */

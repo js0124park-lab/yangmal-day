@@ -85,7 +85,7 @@ export default function HomeScreen() {
             <div className="name">Lv.{state.level} 양말이</div>
             <div className="love">
               <HeartIcon size={12} />
-              <Meter value={state.affection} color="var(--pink)" />
+              <Meter value={state.affection} label="친밀도" color="var(--pink)" />
               <span>{state.affection}%</span>
             </div>
           </div>
@@ -189,7 +189,7 @@ export default function HomeScreen() {
               EXP {fmt(state.exp)} / {fmt(need)}
             </span>
           </div>
-          <Meter value={Math.round((state.exp / need) * 100)} />
+          <Meter value={Math.round((state.exp / need) * 100)} label="다음 레벨까지 경험치" valueText={`${fmt(state.exp)} / ${fmt(need)}`} />
         </div>
       </div>
 
