@@ -18,6 +18,14 @@ export class ConflictError extends Error {
   }
 }
 
+/** The server refused the state as impossible (see private.game_state_problem). Retrying will not help. */
+export class InvalidStateError extends Error {
+  constructor(public field: string) {
+    super(`invalid_state:${field}`);
+    this.name = 'InvalidStateError';
+  }
+}
+
 /** Network or server trouble that is worth retrying. */
 export class TransientError extends Error {
   constructor(message: string) {
@@ -50,6 +58,8 @@ export async function pushSave(state: unknown, baseRevision: number): Promise<nu
   });
   if (error) {
     if (error.message.includes('revision_conflict')) throw new ConflictError();
+    const invalid = error.message.match(/invalid_state:([\w.]+)/);
+    if (invalid) throw new InvalidStateError(invalid[1]);
     throw new TransientError(error.message);
   }
   return data;

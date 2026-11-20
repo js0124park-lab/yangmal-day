@@ -2,7 +2,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useAuth } from '../auth/AuthProvider';
 import { useToast } from '../components/Toast';
-import { ConflictError, deleteMyAccount, fetchSave, pushSave, type CloudSave } from '../lib/cloudSave';
+import { ConflictError, InvalidStateError, deleteMyAccount, fetchSave, pushSave, type CloudSave } from '../lib/cloudSave';
 import { INITIAL, clearLocalSave, normalizeState, useGame, type GameState } from '../game/state';
 import { hasUnsyncedPlayerChanges, readMeta, resetMeta, writeMeta } from '../game/saveMeta';
 import { ConflictDialog } from './ConflictDialog';
@@ -121,6 +121,12 @@ export function SyncProvider({ children }: { children: ReactNode }) {
           } catch {
             setPhase('offline');
           }
+          return false;
+        }
+        if (err instanceof InvalidStateError) {
+          // retrying the same data cannot succeed; keep playing locally and say so once
+          setPhase('offline');
+          toast('이 진행은 클라우드에 저장할 수 없어요. 이 기기에는 계속 저장돼요');
           return false;
         }
         setPhase('offline');
