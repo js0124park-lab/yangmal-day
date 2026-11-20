@@ -1,5 +1,16 @@
 # 양말이의 하루
 
+**플레이: https://js0124park-lab.github.io/yangmal-day/** (휴대폰에서 열고 홈 화면에 추가하면 앱처럼 쓸 수 있어요)
+
+## 배포 (GitHub Pages)
+
+`main`에 푸시하면 GitHub Actions(`.github/workflows/deploy.yml`)가 타입 검사 → 단위 테스트 → 빌드 → GitHub Pages 배포를 합니다. 테스트가 실패하면 배포하지 않습니다.
+
+- 사이트는 `/yangmal-day/` 하위 경로에서 열립니다. 빌드할 때 `VITE_BASE`로 경로를 넘기고, 이미지 경로는 `src/lib/asset.ts`의 `asset()`이 맞춰 줍니다.
+- Supabase 주소와 publishable 키는 저장소 **변수**(Settings → Secrets and variables → Actions → Variables)에 있습니다. 공개돼도 되는 키이고, 보안은 Supabase RLS가 맡습니다.
+- `/yangmal-day/home` 같은 주소로 바로 들어와도 열리도록 빌드 후 `404.html`을 만듭니다.
+- 배포된 사이트 확인: `$env:LIVE_URL='https://js0124park-lab.github.io/yangmal-day/'; npx playwright test e2e/live.spec.ts` (계정을 만들지 않음)
+
 "양말이의 하루 디자인 초안" 캔버스를 Vite + React + TypeScript로 옮긴 게임 프로토타입입니다.
 
 ## 실행
