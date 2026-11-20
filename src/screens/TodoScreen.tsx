@@ -5,6 +5,7 @@ import { useToast } from '../components/Toast';
 import { CheckIcon, CloseIcon, GiftIcon, PawIcon } from '../components/icons';
 import { BONUS, TODOS } from '../data/mock';
 import { buzz } from '../game/hooks';
+import { playSound } from '../game/sound';
 import { useGame } from '../game/state';
 import { ROUTES } from '../routes';
 
@@ -27,6 +28,7 @@ export default function TodoScreen() {
   const claim = () => {
     dispatch({ type: 'claimBonus' });
     buzz(30);
+    playSound('reward');
     toast(`보너스 상자! 코인 +${BONUS.coins} · 하트 +${BONUS.hearts} · EXP +${BONUS.exp}`);
   };
 
@@ -69,6 +71,7 @@ export default function TodoScreen() {
                     onClick={() => {
                       dispatch({ type: 'toggleTodo', id: t.id });
                       buzz();
+                      playSound('tap');
                     }}
                   >
                     <CheckIcon />

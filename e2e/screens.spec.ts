@@ -161,6 +161,48 @@ test('deco: buy a plant, place it, confirm', async ({ page }) => {
   expect(problems).toEqual([]);
 });
 
+test('missions: cooking unlocks a reward that pays once', async ({ page }) => {
+  const problems = await freshStart(page);
+  await enterHome(page);
+  await expect(page.getByRole('link', { name: '미션', exact: true })).toBeVisible(); // nothing to claim yet
+
+  await page.getByRole('link', { name: '식사' }).click();
+  for (let i = 0; i < 5; i++) {
+    await page.getByRole('button', { name: /탭! 썰기/ }).click();
+    await page.waitForTimeout(120);
+  }
+  await page.getByRole('button', { name: /먹여 주기/ }).click();
+  await expect(page).toHaveURL(/\/home$/);
+
+  const missionLink = page.getByRole('link', { name: /미션, 받을 보상 1개/ });
+  await expect(missionLink).toBeVisible();
+  const c0 = await coins(page);
+  await missionLink.click();
+  await expect(page.getByRole('dialog', { name: '미션' })).toBeVisible();
+  await shot(page, 'M-missions');
+
+  await page.getByRole('button', { name: '첫 화식 요리 보상 받기' }).click();
+  await expect(page.getByLabel('받음')).toHaveCount(1);
+  await expect(page.getByText('1 / 8 달성')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect.poll(() => coins(page)).toBe(c0 + 100);
+  await expect(page.getByRole('link', { name: '미션', exact: true })).toBeVisible();
+  expect(problems).toEqual([]);
+});
+
+test('settings: sound effects switch', async ({ page }) => {
+  const problems = await freshStart(page);
+  await enterHome(page);
+  await page.getByRole('button', { name: /프로필, 설정 열기/ }).click();
+  const sw = page.getByRole('switch', { name: /효과음/ });
+  await expect(sw).toHaveAttribute('aria-checked', 'true');
+  await sw.click();
+  await expect(sw).toHaveAttribute('aria-checked', 'false');
+  await page.reload();
+  await expect(page.getByRole('switch', { name: /효과음/ })).toHaveAttribute('aria-checked', 'false');
+  expect(problems).toEqual([]);
+});
+
 test('settings: reset progress with confirmation', async ({ page }) => {
   const problems = await freshStart(page);
   await enterHome(page);

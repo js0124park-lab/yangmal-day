@@ -4,6 +4,7 @@ import { Bubble, Button, Chip, IconLink, Screen, Stage, TitlePill, TopBar } from
 import { useToast } from '../components/Toast';
 import { BackIcon, CheckIcon, KnifeIcon, PawIcon, StarIcon } from '../components/icons';
 import { buzz, useFrame } from '../game/hooks';
+import { playSound } from '../game/sound';
 import { useGame } from '../game/state';
 import { ROUTES } from '../routes';
 
@@ -59,11 +60,19 @@ export default function KitchenScreen() {
     setMarks((m) => [...m, pos]);
     setCombo((c) => (j === 'miss' ? 0 : c + 1));
     buzz(j === 'perfect' ? 25 : 10);
+    playSound(j);
   };
 
   const serve = () => {
     const stars = starsFor(results);
-    const leveled = reward({ coins: 30 + stars * 10, exp: 60 + stars * 20, stats: { fullness: 30 + stars * 10 }, todo: 'meal' });
+    const leveled = reward({
+      coins: 30 + stars * 10,
+      exp: 60 + stars * 20,
+      stats: { fullness: 30 + stars * 10 },
+      todo: 'meal',
+      track: { cooks: 1, threeStarCooks: stars === 3 ? 1 : 0 },
+    });
+    playSound('reward');
     toast(`잘 먹었습니다! 포만감 +${30 + stars * 10} · 코인 +${30 + stars * 10}`);
     navigate(leveled ? ROUTES.levelUp : ROUTES.home);
   };

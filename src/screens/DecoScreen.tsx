@@ -4,6 +4,7 @@ import { useToast } from '../components/Toast';
 import { BackIcon, CheckIcon, CoinDotIcon, HeartIcon, HouseIcon, RotateIcon, StoreBoxIcon } from '../components/icons';
 import { DECO_CATEGORIES, DECO_SPACES, FURNITURE, POSES, type DecoCategory, type FurnitureDef, type FurnitureKind, type PoseId } from '../data/mock';
 import { buzz } from '../game/hooks';
+import { playSound } from '../game/sound';
 import { fmt, useGame } from '../game/state';
 import { ROUTES } from '../routes';
 
@@ -101,6 +102,7 @@ export default function DecoScreen() {
       const wallet = f.currency === 'coin' ? state.coins : state.hearts;
       if (wallet < f.price) return toast(f.currency === 'coin' ? '코인이 부족해요' : '하트가 부족해요');
       dispatch({ type: 'buy', kind: f.kind, price: f.price, currency: f.currency });
+      playSound('coin');
       toast(`${f.name}을(를) 샀어요! 바로 배치해 볼게요`);
     }
     dispatch({ type: 'place', kind: f.kind });
@@ -113,6 +115,7 @@ export default function DecoScreen() {
     reward(first ? { coins: 30, exp: 50, stats: { joy: 5 }, todo: 'deco' } : { stats: { joy: 2 } });
     setPose('wink');
     buzz(25);
+    playSound('reward');
     toast(first ? '배치 완료! 코인 +30 · EXP +50' : '배치 완료!');
   };
 

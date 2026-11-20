@@ -1,6 +1,8 @@
 import { useState, type MouseEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSync, type SyncPhase } from '../sync/SyncProvider';
+import { claimableCount } from '../game/missions';
+import { playSound } from '../game/sound';
 import { Bubble, Meter, Screen, StatRow } from '../components/ui';
 import { Floaters } from '../components/Floaters';
 import { useToast } from '../components/Toast';
@@ -53,6 +55,7 @@ export default function HomeScreen() {
   const [wiggle, setWiggle] = useState(0);
 
   const done = TODOS.filter((t) => state.todos[t.id]).length;
+  const readyMissions = claimableCount(state);
   const next = TODOS.find((t) => !state.todos[t.id]);
   const stage = growthStage(state.level);
   const need = expToNext(state.level);
@@ -68,6 +71,7 @@ export default function HomeScreen() {
     setPets((n) => n + 1);
     setWiggle((n) => n + 1);
     buzz();
+    playSound('pet');
   };
 
   const soon = (what: string) => () => toast(`${what}은(는) 준비 중이에요`);
@@ -139,16 +143,22 @@ export default function HomeScreen() {
           {say}
         </Bubble>
         <div className="quick">
-          <button type="button" onClick={soon('미션')}>
+          <Link to={ROUTES.missions} aria-label={readyMissions ? `미션, 받을 보상 ${readyMissions}개` : '미션'}>
             <MissionIcon />
             미션
-          </button>
+            {readyMissions > 0 && (
+              <span className="badge" aria-hidden="true">
+                {readyMissions}
+              </span>
+            )}
+          </Link>
           <button
             type="button"
             aria-label={state.mailRead ? '우편함' : '우편함, 새 우편 2개'}
             onClick={() => {
               if (state.mailRead) return toast('새 우편이 없어요');
               dispatch({ type: 'readMail' });
+              playSound('coin');
               toast('출석 선물 도착! 코인 +100');
             }}
           >

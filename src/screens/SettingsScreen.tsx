@@ -4,6 +4,7 @@ import { Button, IconLink, Screen, TitlePill, TopBar } from '../components/ui';
 import { BackIcon, CheckIcon, PawIcon } from '../components/icons';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 import { useInstall } from '../components/Pwa';
+import { setSoundEnabled, useSoundEnabled } from '../game/sound';
 import { useToast } from '../components/Toast';
 import { useAuth } from '../auth/AuthProvider';
 import { useSync, type SyncPhase } from '../sync/SyncProvider';
@@ -40,6 +41,7 @@ export default function SettingsScreen() {
   const toast = useToast();
   const navigate = useNavigate();
   const install = useInstall();
+  const soundOn = useSoundEnabled();
   const [nickname, setNickname] = useState('');
   const [savedNick, setSavedNick] = useState('');
   const [newPw, setNewPw] = useState('');
@@ -235,6 +237,16 @@ export default function SettingsScreen() {
           </div>
         </form>
       )}
+
+      <div className="panel settings-section switch-row">
+        <span id="sound-label">
+          <b>효과음</b>
+          <small>쓰다듬기, 요리, 공놀이 소리 · 이 기기에만 적용돼요</small>
+        </span>
+        <button type="button" className="switch" role="switch" aria-checked={soundOn} aria-labelledby="sound-label" onClick={() => setSoundEnabled(!soundOn)}>
+          <i aria-hidden="true" />
+        </button>
+      </div>
 
       {install.state !== 'installed' && install.state !== 'unsupported' && (
         <div className="panel settings-section">

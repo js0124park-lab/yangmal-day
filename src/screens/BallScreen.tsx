@@ -3,6 +3,7 @@ import { Button, Chip, IconLink, Screen, Stage, TitlePill, TopBar } from '../com
 import { Floaters } from '../components/Floaters';
 import { BallIcon, ClockIcon, PauseIcon, PawIcon, ThrowUpIcon } from '../components/icons';
 import { buzz, useFloaters, useFrame } from '../game/hooks';
+import { playSound } from '../game/sound';
 import { fmt, useGame } from '../game/state';
 import { ROUTES } from '../routes';
 import { useAuth } from '../auth/AuthProvider';
@@ -54,6 +55,7 @@ export default function BallScreen() {
       setNewBest(score > state.bestBall);
       dispatch({ type: 'ballResult', score });
       buzz(40);
+      playSound('reward');
       if (online) {
         setRank({ kind: 'sending' });
         submitBallScore(score)
@@ -90,9 +92,11 @@ export default function BallScreen() {
       setShout({ id: now, text: '나이스 캐치!', kind: 'good' });
       spawn('82%', 96, `+${pts}`, 'text');
       buzz(20);
+      playSound('catch');
     } else {
       setCombo(0);
       setShout({ id: now, text: '아쉬워요!', kind: 'miss' });
+      playSound('miss');
       lockUntil.current = now + 350; // stops button mashing
     }
   };

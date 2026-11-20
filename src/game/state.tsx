@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useReducer,
 import { BONUS, TREATS, type FurnitureKind, type PoseId, type TodoId } from '../data/mock';
 import { DRIFT_PER_HOUR, MAX_DRIFT_HOURS, gameDay } from './time';
 import { bumpLocalSeq } from './saveMeta';
+import { MISSIONS, type CounterKey, type Counters } from './missions';
 
 export type StatKey = 'fullness' | 'joy' | 'clean' | 'stamina';
 export type Stats = Record<StatKey, number>;
@@ -26,6 +27,10 @@ export interface GameState {
   day: string;
   /** ms timestamp of the last time drift was applied; 0 until the first tick */
   lastTick: number;
+  /** lifetime counters that missions measure */
+  counters: Counters;
+  /** mission ids whose reward was taken */
+  missionsClaimed: string[];
 }
 
 export interface Reward {
@@ -35,6 +40,8 @@ export interface Reward {
   affection?: number;
   stats?: Partial<Stats>;
   todo?: TodoId;
+  /** lifetime counters to bump (missions) */
+  track?: Partial<Counters>;
 }
 
 export const INITIAL: GameState = {
@@ -54,6 +61,8 @@ export const INITIAL: GameState = {
   levelUp: null,
   day: '',
   lastTick: 0,
+  counters: { cooks: 0, threeStarCooks: 0, bonusClaims: 0 },
+  missionsClaimed: [],
 };
 
 /** EXP needed to go from `level` to the next one (Lv.5 → 1,500 as in the design). */
@@ -82,8 +91,11 @@ function applyReward(s: GameState, r: Reward): GameState {
   const grown = addExp(s.level, s.exp, r.exp ?? 0);
   const stats = { ...s.stats };
   for (const k of Object.keys(r.stats ?? {}) as StatKey[]) stats[k] = clamp(stats[k] + (r.stats?.[k] ?? 0));
+  const counters = { ...s.counters };
+  for (const k of Object.keys(r.track ?? {}) as CounterKey[]) counters[k] += Math.max(0, r.track?.[k] ?? 0);
   return {
     ...s,
+    counters,
     coins: Math.max(0, s.coins + (r.coins ?? 0)),
     hearts: Math.max(0, s.hearts + (r.hearts ?? 0)),
     affection: clamp(s.affection + (r.affection ?? 0)),
@@ -109,6 +121,7 @@ export type Action =
   | { type: 'flip' }
   | { type: 'pose'; pose: PoseId }
   | { type: 'readMail' }
+  | { type: 'claimMission'; id: string }
   | { type: 'clearLevelUp' }
   | { type: 'tick'; now: number }
   | { type: 'load'; state: GameState; now: number }
@@ -172,6 +185,14 @@ export function normalizeState(raw: unknown): GameState {
     levelUp: isObj(s.levelUp) ? (s.levelUp as GameState['levelUp']) : null,
     day: typeof s.day === 'string' ? s.day : '',
     lastTick: num(s.lastTick, 0),
+    counters: {
+      cooks: Math.max(0, num((s.counters as Partial<Counters> | undefined)?.cooks, 0)),
+      threeStarCooks: Math.max(0, num((s.counters as Partial<Counters> | undefined)?.threeStarCooks, 0)),
+      bonusClaims: Math.max(0, num((s.counters as Partial<Counters> | undefined)?.bonusClaims, 0)),
+    },
+    missionsClaimed: Array.isArray(s.missionsClaimed)
+      ? s.missionsClaimed.filter((x): x is string => typeof x === 'string' && MISSIONS.some((m) => m.id === x))
+      : [],
   };
 }
 
@@ -185,7 +206,7 @@ export function reducer(s: GameState, a: Action): GameState {
       return { ...s, todos: { ...s.todos, [a.id]: !s.todos[a.id] } };
     case 'claimBonus':
       if (s.bonusClaimed || Object.values(s.todos).some((d) => !d)) return s;
-      return { ...applyReward(s, BONUS), bonusClaimed: true };
+      return { ...applyReward(s, { ...BONUS, track: { bonusClaims: 1 } }), bonusClaimed: true };
     case 'ballResult': {
       const exp = Math.max(30, Math.min(120, Math.round(a.score / 10)));
       const next = applyReward(s, { coins: 50, exp, stats: { joy: 40, stamina: -15 }, todo: 'play' });
@@ -219,6 +240,11 @@ export function reducer(s: GameState, a: Action): GameState {
       return { ...s, deco: { ...s.deco, pose: a.pose } };
     case 'readMail':
       return s.mailRead ? s : { ...applyReward(s, { coins: 100 }), mailRead: true };
+    case 'claimMission': {
+      const m = MISSIONS.find((x) => x.id === a.id);
+      if (!m || s.missionsClaimed.includes(m.id) || m.progress(s) < m.goal) return s;
+      return { ...applyReward(s, m.reward), missionsClaimed: [...s.missionsClaimed, m.id] };
+    }
     case 'clearLevelUp':
       return { ...s, levelUp: null };
     case 'tick':

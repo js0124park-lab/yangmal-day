@@ -5,6 +5,7 @@ import { useToast } from '../components/Toast';
 import { BackIcon, BathIcon, BrushIcon, CheckIcon, DropIcon, HealthIcon, NailIcon } from '../components/icons';
 import { CARE_TABS, type CareId } from '../data/mock';
 import { buzz, useFloaters } from '../game/hooks';
+import { playSound } from '../game/sound';
 import { useGame, type Reward } from '../game/state';
 import { ROUTES } from '../routes';
 
@@ -43,6 +44,7 @@ export default function CareScreen() {
     const next = Math.min(def.steps, step + 1);
     setProgress((p) => ({ ...p, [tab]: next }));
     buzz(15);
+    playSound(next === def.steps ? 'reward' : 'splash');
     for (let i = 0; i < 3; i++) spawn(x + (i - 1) * 16, y + i * 6, '', tab === 'bath' ? 'foam' : 'sparkle');
     if (next === def.steps) {
       const r = REWARDS[tab];

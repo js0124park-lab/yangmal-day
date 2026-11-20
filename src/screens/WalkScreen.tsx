@@ -5,6 +5,7 @@ import { useToast } from '../components/Toast';
 import { HouseIcon, PawIcon, PinIcon } from '../components/icons';
 import { TREATS } from '../data/mock';
 import { buzz, useFrame } from '../game/hooks';
+import { playSound } from '../game/sound';
 import { useGame } from '../game/state';
 import { ROUTES } from '../routes';
 
@@ -108,6 +109,7 @@ export default function WalkScreen() {
     setSniffPressed(true);
     window.setTimeout(() => setSniffPressed(false), 160);
     buzz();
+    playSound('tap');
     const n = nearest();
     const id = performance.now();
     if (!n) return setCallout({ kind: 'none', text: '공원의 간식을 모두 찾았어요!', id });
@@ -122,6 +124,7 @@ export default function WalkScreen() {
     dispatch({ type: 'pickTreat', id: n.t.id });
     setJoyGained((j) => j + 6);
     buzz(30);
+    playSound('coin');
     toast('간식을 찾았어요! 즐거움 +6 · 코인 +10 · EXP +20');
     setCallout({ kind: 'idle', text: remaining.length === 1 ? '모든 간식을 찾았어요!' : '또 다른 냄새를 찾아볼까요?', id: performance.now() });
   };

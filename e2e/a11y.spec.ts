@@ -38,6 +38,10 @@ test('every screen passes WCAG 2.1 AA automated checks', async ({ page }) => {
   all.push(...(await scan(page, 'todo')));
   await page.goto('/home');
 
+  await page.getByRole('link', { name: /^미션/ }).click();
+  all.push(...(await scan(page, 'missions')));
+  await page.goto('/home');
+
   for (const [link, name] of [
     ['식사', 'kitchen'],
     ['놀이', 'ball'],

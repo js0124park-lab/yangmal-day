@@ -5,6 +5,7 @@ import { ROUTES } from './routes';
 import { useGame } from './game/state';
 import { useToast } from './components/Toast';
 import { PawIcon } from './components/icons';
+import { playSound } from './game/sound';
 
 // The title is in the main bundle so it paints at once; every other screen is its own chunk.
 const screens = {
@@ -12,6 +13,7 @@ const screens = {
   settings: () => import('./screens/SettingsScreen'),
   home: () => import('./screens/HomeScreen'),
   todo: () => import('./screens/TodoScreen'),
+  missions: () => import('./screens/MissionsScreen'),
   kitchen: () => import('./screens/KitchenScreen'),
   levelUp: () => import('./screens/LevelUpScreen'),
   walk: () => import('./screens/WalkScreen'),
@@ -24,6 +26,7 @@ const LoginScreen = lazy(screens.login);
 const SettingsScreen = lazy(screens.settings);
 const HomeScreen = lazy(screens.home);
 const TodoScreen = lazy(screens.todo);
+const MissionsScreen = lazy(screens.missions);
 const KitchenScreen = lazy(screens.kitchen);
 const LevelUpScreen = lazy(screens.levelUp);
 const WalkScreen = lazy(screens.walk);
@@ -34,7 +37,7 @@ const DecoScreen = lazy(screens.deco);
 /** Warm every screen chunk once the browser is idle, home first, so later taps never wait. */
 function usePrefetchScreens() {
   useEffect(() => {
-    const order = [screens.home, screens.todo, screens.kitchen, screens.ball, screens.walk, screens.care, screens.deco, screens.levelUp, screens.settings, screens.login];
+    const order = [screens.home, screens.todo, screens.missions, screens.kitchen, screens.ball, screens.walk, screens.care, screens.deco, screens.levelUp, screens.settings, screens.login];
     let i = 0;
     let handle = 0;
     // Safari has no requestIdleCallback: fall back to a short timer
@@ -81,6 +84,7 @@ function LevelUpWatcher() {
     const lv = state.levelUp?.to ?? null;
     if (lv === null || shown.current === lv || pathname === ROUTES.levelUp) return;
     shown.current = lv;
+    playSound('levelup');
     toast(`레벨업! Lv.${lv}가 되었어요`, { label: '보기', onClick: () => navigate(ROUTES.levelUp) });
   }, [state.levelUp, pathname, toast, navigate]);
 
@@ -102,6 +106,7 @@ export default function App() {
             <Route path={ROUTES.settings} element={<SettingsScreen />} />
             <Route path={ROUTES.home} element={<HomeScreen />} />
             <Route path={ROUTES.todo} element={<TodoScreen />} />
+            <Route path={ROUTES.missions} element={<MissionsScreen />} />
             <Route path={ROUTES.kitchen} element={<KitchenScreen />} />
             <Route path={ROUTES.levelUp} element={<LevelUpScreen />} />
             <Route path={ROUTES.walk} element={<WalkScreen />} />

@@ -52,7 +52,33 @@
 .settings-actions{display:flex;flex-direction:column;align-items:stretch;gap:6px;margin-top:auto;padding-top:6px}
 .settings-actions .version{text-align:center;font-size:11px;color:var(--muted)}
 
-/* ---------- sync status dot ---------- */
+/* ---------- on/off switch ---------- */
+.switch-row{flex-direction:row;align-items:center;justify-content:space-between;gap:12px}
+.switch-row > span{display:flex;flex-direction:column;gap:2px}
+.switch-row small{font-size:12px;color:var(--muted)}
+.switch{position:relative;width:56px;height:32px;flex:none;border-radius:16px;border:2px solid var(--brown);background:var(--sand);padding:0;transition:background-color .2s}
+.switch i{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:var(--paper);border:2px solid var(--brown);box-sizing:border-box;transition:transform .2s cubic-bezier(.2,.9,.25,1)}
+.switch[aria-checked="true"]{background:var(--green)}
+.switch[aria-checked="true"] i{transform:translateX(24px)}
+
+/* ---------- missions ---------- */
+.mission-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.mission{display:flex;align-items:center;gap:10px;background:var(--paper);border:2px solid var(--tan);border-radius:16px;padding:10px 12px}
+.mission.claimable{border-color:var(--orange);background:#FFF1DC;box-shadow:0 3px 0 rgba(232,155,60,.35)}
+.mission.claimed{opacity:.7}
+.mission .disc{width:44px;height:44px;border-radius:50%;background:var(--sand);border:2px solid var(--brown);display:flex;align-items:center;justify-content:center;flex:none}
+.mission .body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.mission .body > b{font-family:var(--display);font-weight:400;font-size:15px;color:var(--ink)}
+.mission .desc{font-size:12px;color:var(--brown)}
+.mission .bar{display:flex;align-items:center;gap:6px}
+.mission .bar .meter{height:8px}
+.mission .count{font-family:var(--display);font-size:11px;color:var(--ink);white-space:nowrap}
+.mission .reward{font-size:11px;font-weight:700;color:var(--orange-text)}
+.mission .claim{height:40px;padding:0 14px;border-radius:20px;font-size:15px;flex:none;box-shadow:0 3px 0 var(--orange-dark)}
+.mission .got{width:32px;height:32px;border-radius:50%;background:#E3F1D3;border:2px solid #467A2A;display:flex;align-items:center;justify-content:center;flex:none}
+/* draws the eye without moving the tap target */
+.mission.claimable .claim{animation:claim-glow 1.4s ease-in-out infinite}
+@keyframes claim-glow{0%,100%{box-shadow:0 3px 0 var(--orange-dark),0 0 0 0 rgba(232,155,60,.55)}50%{box-shadow:0 3px 0 var(--orange-dark),0 0 0 6px rgba(232,155,60,0)}}
 .sync-dot{display:inline-block;width:10px;height:10px;border-radius:50%;border:2px solid var(--paper);box-sizing:content-box;background:var(--tan);flex:none}
 .sync-dot.ok{background:#5FA83A}
 .sync-dot.busy{background:var(--orange);animation:sync-pulse 1s ease-in-out infinite}
